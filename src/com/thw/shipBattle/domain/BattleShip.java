@@ -9,7 +9,7 @@ public class BattleShip {
   private int height;
   private int width;
   private Coordinate coordinate;
-
+  private boolean isDestroyed;
   private String coordinates;
 
     public Coordinate getCoordinate() {

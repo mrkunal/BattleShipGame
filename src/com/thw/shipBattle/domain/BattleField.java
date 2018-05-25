@@ -10,6 +10,8 @@ public class BattleField {
    private List<BattleShip> battleShipList;
    private LinkedList<String> sequence;
 
+   private HashMap<Coordinate,BattleShipBlock> battleShipHashMap;
+
     public ShipPlayer getShipPlayer() {
         return shipPlayer;
     }
@@ -28,6 +30,16 @@ public class BattleField {
 
     public BattleField(ShipPlayer shipPlayer) {
         this.shipPlayer = shipPlayer;
+        this.battleShipHashMap=new HashMap<>();
+    }
+
+
+    public HashMap<Coordinate, BattleShipBlock> getBattleShipHashMap() {
+        return battleShipHashMap;
+    }
+
+    public void setBattleShipHashMap(HashMap<Coordinate, BattleShipBlock> battleShipHashMap) {
+        this.battleShipHashMap = battleShipHashMap;
     }
 
     public void addBattleShip(BattleShip battleShip)
@@ -44,5 +56,15 @@ public class BattleField {
 
     public void setSequence(LinkedList<String> sequence) {
         this.sequence = sequence;
+    }
+
+    public Boolean isDestroyed(){
+
+        int strength=0;
+        for(BattleShip battleShip: this.getBattleShipList())
+        {
+            strength+=battleShip.getStrength();
+        }
+        return strength>0?false:true;
     }
 }
