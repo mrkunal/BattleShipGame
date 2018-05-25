@@ -16,12 +16,11 @@ public class Main {
         battleCO.setShips(2);
         String[] shipDetails = {"Q 1 1 A1 B2", "P 2 1 D4 C3"};
         battleCO.setShipDetails(shipDetails);
-        String[] shipSequence = {"A1 B2 B2 B3", "A1 B2 B3 A1 D1 E1 D4 D4 D5 D5"};
+        String[] shipSequence = {"B2 B2 C3 C4 B3", "A1 B2 B3 A1 D1 E1 D4 D4 D5 D5"};
         battleCO.setShipSequence(shipSequence);
 
         battleCO.setPlayer1Name("Player 1");
         battleCO.setPlayer2Name("Player 2");
-
         battleGameService.battleShips(battleCO);
 
     }

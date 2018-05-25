@@ -39,7 +39,7 @@ public class BattleFieldServiceImpl implements BattleFieldService {
     public Coordinate getCoordinate(String targetKey) {
         char[] axis = targetKey.toCharArray();
 
-        char y = axis[0];
+        char y = (char) (axis[0] - 64);
         int x = Integer.parseInt(String.copyValueOf(axis).substring(1, axis.length));
 
         Coordinate coordinates = new Coordinate();

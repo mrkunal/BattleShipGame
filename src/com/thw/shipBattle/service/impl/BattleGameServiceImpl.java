@@ -13,36 +13,25 @@ public class BattleGameServiceImpl implements BattleGameService {
     BattleFieldServiceImpl battleFieldService = new BattleFieldServiceImpl();
 
     public ShipPlayer battleShips(BattleCO battleCO) {
-
         ShipPlayer firstPlayer = new ShipPlayer(battleCO.getPlayer1Name());
         ShipPlayer secondPlayer = new ShipPlayer(battleCO.getPlayer2Name());
-
         BattleField firstBattleField = new BattleField(firstPlayer);
         BattleField secondBattleField = new BattleField(secondPlayer);
-
         for (int shipCount = 0; shipCount < battleCO.getShips(); shipCount++) {
-
             String shipDetails = battleCO.getShipDetails()[shipCount];
-
             BattleShip firstPlayerShip = new BattleShip();
             BattleShip secondPlayerShip = new BattleShip();
-
             firstPlayerShip = populateBattleShip(firstPlayerShip, shipDetails, 3);
             secondPlayerShip = populateBattleShip(secondPlayerShip, shipDetails, 4);
-
             firstBattleField = battleFieldService.addBattleShipInSquad(firstPlayerShip, firstBattleField);
             secondBattleField = battleFieldService.addBattleShipInSquad(secondPlayerShip, secondBattleField);
-
         }
-
         firstBattleField = populateSequenceInBattleField(firstBattleField, battleCO.getShipSequence()[0].split(" "));
         secondBattleField = populateSequenceInBattleField(secondBattleField, battleCO.getShipSequence()[1].split(" "));
-        startBattle(firstBattleField, secondBattleField);
-
-        return null;
+       return startBattle(firstBattleField, secondBattleField);
     }
 
-    static BattleShipClass getBattleShipClass(BattleShip battleShip, String shipClass) {
+    private BattleShipClass getBattleShipClass( String shipClass) {
 
         switch (shipClass) {
             case "Q":
@@ -54,11 +43,11 @@ public class BattleGameServiceImpl implements BattleGameService {
     }
 
 
-    BattleShip populateBattleShip(BattleShip battleShip, String shipDetail, int playerNum) {
+   private BattleShip populateBattleShip(BattleShip battleShip, String shipDetail, int playerNum) {
 
         String[] ship = shipDetail.split(" ");
 
-        BattleShipClass battleShipClass = getBattleShipClass(battleShip, ship[0]);
+        BattleShipClass battleShipClass = getBattleShipClass( ship[0]);
         battleShip.setBattleShipClass(battleShipClass);
         battleShip.setHeight(Integer.parseInt(ship[2]));
         battleShip.setWidth(Integer.parseInt(ship[1]));
@@ -69,7 +58,7 @@ public class BattleGameServiceImpl implements BattleGameService {
         return battleShip;
     }
 
-    BattleField populateSequenceInBattleField(BattleField battleField, String[] targetSequence) {
+  private  BattleField populateSequenceInBattleField(BattleField battleField, String[] targetSequence) {
         LinkedList<String> battleTargetSequenceList = new LinkedList<>();
 
         Collections.addAll(battleTargetSequenceList, targetSequence);
@@ -77,7 +66,7 @@ public class BattleGameServiceImpl implements BattleGameService {
         return battleField;
     }
 
-    void startBattle(BattleField attackerBattleField, BattleField targetBattleField) {
+   private ShipPlayer startBattle(BattleField attackerBattleField, BattleField targetBattleField) {
 
         while (!attackerBattleField.getSequence().isEmpty() || !targetBattleField.getSequence().isEmpty()) {
 
@@ -101,15 +90,16 @@ public class BattleGameServiceImpl implements BattleGameService {
                if(targetBattleField.isDestroyed())
                {
                    System.out.println(attackerBattleField.getShipPlayer().getName()+"  won the battle");
-                   break;
+                   return attackerBattleField.getShipPlayer();
+
                }
             }
 
         }
-
+      return null;
     }
 
-    Boolean attackBattleField(BattleField attackingBattleField, BattleField targetBattleField, String targetBlock) {
+   private Boolean attackBattleField(BattleField attackingBattleField, BattleField targetBattleField, String targetBlock) {
 
         Coordinate targetCoordinate = battleFieldService.getCoordinate(targetBlock);
 
@@ -129,23 +119,5 @@ public class BattleGameServiceImpl implements BattleGameService {
         return false;
     }
 
-    Boolean isBattleShipHit(BattleShip battleShip, Coordinate targetCoordinate) {
-        Coordinate shipCoordinate = battleShip.getCoordinate();
-
-        if (shipCoordinate.getX() <= targetCoordinate.getX() && shipCoordinate.getX() + battleShip.getWidth() - 1 >= targetCoordinate.getX()) {
-
-
-            if (shipCoordinate.getY() <= targetCoordinate.getY() && shipCoordinate.getY() + battleShip.getHeight() - 1 >= targetCoordinate.getY()) {
-                int strength = battleShip.getStrength();
-
-                if (strength > 0) {
-                    battleShip.setStrength(--strength);
-                    return true;
-                }
-            }
-
-        }
-        return false;
-    }
 
 }

@@ -2,7 +2,7 @@ package com.thw.shipBattle.co;
 
 public class BattleCO {
 
-     private String battleSize;
+    private String battleSize;
     private int ships;
     private String[] shipDetails;
     private String[] shipSequence;
